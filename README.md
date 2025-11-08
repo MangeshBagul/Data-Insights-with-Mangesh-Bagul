@@ -12,4 +12,4 @@ Over the past few years, I have upskilled into Power BI and SQL through multiple
 My strengths include data modeling, DAX measure creation, performance optimization, and storytelling through clean, business-friendly visuals. I bring a combination of process expertise + analytical skill, making me a strong fit for Power BI, Business Analyst, and reporting roles in the mortgage industry.
 
 
-<img width="1442" height="807" alt="project1 1" src="https://github.com/user-attachments/assets/3f61a6f0-74ff-4040-bdf3-04631e6e0e29" />
+
