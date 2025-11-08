@@ -18,7 +18,7 @@ Sales leadership needed real-time, accurate visibility of the sales pipeline val
 
   <img width="1442" height="807" alt="project1 1" src="https://github.com/user-attachments/assets/e268b20c-535e-4ecb-9bc8-7c1ebb95c876" />
   
-**Business Impact & Outcomes **
+**Business Impact & Outcomes**
 
 **Quantifiable Results:**
 
@@ -108,7 +108,7 @@ Problem-Solving: Debugged performance issues and optimized dashboard load times
 
 **Downloadable Assets**
 
-PBIX File: [LinK]([url](https://drive.google.com/file/d/1UF0kX0b0HtsmtEJ_ybQzA6JvvuUWws9o/view?usp=sharing))
+PBIX File: [Link]([url](https://drive.google.com/file/d/1UF0kX0b0HtsmtEJ_ybQzA6JvvuUWws9o/view?usp=sharing)))
 
 PDF Report: [Link]([url](https://drive.google.com/file/d/1R1B97ILv5q-gynRMuAxWKKi5Sikicf35/view?usp=sharing))
 
