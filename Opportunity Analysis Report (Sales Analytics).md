@@ -108,8 +108,8 @@ Problem-Solving: Debugged performance issues and optimized dashboard load times
 
 **Downloadable Assets**
 
-PBIX File: [Link]([url](https://drive.google.com/file/d/1UF0kX0b0HtsmtEJ_ybQzA6JvvuUWws9o/view?usp=sharing)))
+PBIX File: https://drive.google.com/file/d/1UF0kX0b0HtsmtEJ_ybQzA6JvvuUWws9o/view?usp=sharing
 
-PDF Report: [Link]([url](https://drive.google.com/file/d/1R1B97ILv5q-gynRMuAxWKKi5Sikicf35/view?usp=sharing))
+PDF Report: https://drive.google.com/file/d/1R1B97ILv5q-gynRMuAxWKKi5Sikicf35/view?usp=sharing
 
 Data Dictionary: N/A
