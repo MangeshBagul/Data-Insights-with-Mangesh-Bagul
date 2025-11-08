@@ -1,5 +1,6 @@
 # Data-Insights-with-Mangesh-Bagul
 Welcome to my personal Power BI portfolio repository! Here you will find a collection of Power BI projects and dashboards that demonstrate my skills and expertise in data visualization, business intelligence, and analytics using Power BI.
+
 **About Me**
 
 I am a Analyst with 5+ years of deep experience in the US Mortgage domain. My background combines hands-on mortgage operations with the ability to convert raw loan data into meaningful dashboards, making me uniquely capable of supporting analytics needs that usually demand 8–10 years of experience.
