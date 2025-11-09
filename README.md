@@ -10,7 +10,9 @@ I have worked extensively across key stages of the mortgage lifecycle, including
 Over the past few years, I have upskilled into Power BI and SQL through multiple end-to-end reporting projects. Today, I can independently build mortgage-specific dashboards such as CD accuracy reports, post-closing quality analytics, turn-time performance, exception tracking, and TRID compliance monitoring.
 
 My strengths include data modeling, DAX measure creation, performance optimization, and storytelling through clean, business-friendly visuals. I bring a combination of process expertise + analytical skill, making me a strong fit for Power BI, Business Analyst, and reporting roles in the mortgage industry.
+
 ![Power Bi](https://img.shields.io/badge/power_bi-F2C811?style=for-the-badge&logo=powerbi&logoColor=black)
+
 ![SQL Server](https://img.shields.io/badge/Microsoft_SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white)
 
 
