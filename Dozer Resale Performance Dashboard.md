@@ -1,9 +1,13 @@
-Category: Equipment Sales & Market Analytics
-Executive Summary:
+**Category:** Equipment Sales & Market Analytics
+
+**Executive Summary:**
+
 A Power BI dashboard analyzing the used heavy machinery (dozer) resale market, providing dealership with pricing strategy, inventory optimization, and regional market insights.
 
-Business Problem & Context
-Challenge:
+**Business Problem & Context**
+
+**Challenge:**
+
 A heavy equipment dealership buying/selling used dozers needed to:
 
 Price machines competitively without leaving money on the table
@@ -16,22 +20,23 @@ Optimize inventory (which machines to stock)
 
 Predict resale values based on age, model, condition
 
-Data Landscape:
+**Data Landscape:**
 
 500+ historical dozer sales transactions
 
-Fields: Model, Manufacturing Year, Configuration, State/Region, Sale Price, Condition Rating
+**Fields:** Model, Manufacturing Year, Configuration, State/Region, Sale Price, Condition Rating
 
-Objective: Build analytics to support pricing and inventory decisions
+**Objective:** Build analytics to support pricing and inventory decisions
 
-Solution Architecture
-Data Import & Transformation:
+**Solution Architecture**
 
-Data source: Historical transaction database
+**Data Import & Transformation:**
 
-Cleaned fields: Standardized model names, validated sale prices, handled missing condition data
+**Data source:** Historical transaction database from Snowflake
 
-Created calculated columns:
+**Cleaned fields:** Standardized model names, validated sale prices, handled missing condition data
+
+**Created calculated columns:**
 
 Machine Age = Current Year - Manufacturing Year
 
@@ -39,39 +44,39 @@ Price per Age = Sale Price / Machine Age (depreciation efficiency metric)
 
 Region Group = Grouped states into geographic regions (South, Midwest, West, Northeast)
 
-Dimensional Model:
+Dimensional Model: N/A
 
 Fact Table: FactDozemSales (one row per transaction)
 
-TransactionID, ModelID, ManufacturingYear, SaleDate, SalePrice, State, Condition
-
-Dimension Tables:
-
-DimDozerModel: ModelName (D3, D4, D5, D6, D7, D8), Manufacturer, YearIntroduced
-
-DimConfiguration: RipperType (Single Shank, Drawbar), Blade Type, Transmission
-
-DimState: State name, Region, ReportingRegion
+SalePrice, YearMade, Meter, Saleyear, Machineage, Datasource, UsageBand
 
 DAX Measures:
 
-Average Sale Price = AVERAGE(Sales[SalePrice])
+average sale price = AVERAGE(DOZER[SALEPRICE] )
 
-Overall: $53.6K
+distint model = DISTINCTCOUNT(DOZER[FIMODELDESC])
+
+avg machine age = AVERAGE(DOZER[MACHINEAGE])
 
 Median Sale Price = MEDIAN(Sales[SalePrice])
 
-Overall: $49K
+machinegroup = SWITCH( TRUE(), DOZER[MACHINEAGE] <=10, "0-10 Group",DOZER[MACHINEAGE] <=20, "11-20 Group",DOZER[MACHINEAGE] <=30, "21-30 Group",DOZER[MACHINEAGE] <=40, "31-40 Group",DOZER[MACHINEAGE] <=50, "41-50 Group")
 
 Price by Model = CALCULATE([Average Sale Price], Groupby Model)
 
-D6 highest: $67K, D3 lowest: $28K
-
 Price by Age = CALCULATE([Average Sale Price], Groupby [Machine Age])
 
-0-5 years: $72K, 5-10 years: $55K, 10-20 years: $32K, 20+ years: $18K
-
 Price by Configuration = Single Shank ripper = $61K (premium vs. standard blade)
+
+PriceBucket = 
+SWITCH(
+    TRUE(),
+    [average sale price] <= 23000, "₹8K–₹23K",
+    [average sale price] <= 46900, "₹23K–₹47K",
+    [average sale price] <= 70800, "₹47K–₹70K",
+    [average sale price] <= 94700, "₹70K–₹94K",
+    "₹94K–₹127.5K"
+)
 
 Units Sold = COUNTA(Sales[TransactionID])
 
@@ -87,99 +92,74 @@ Regional Concentration = % of total sales by region
 
 Midwest (manufacturing belt): 42%, West: 35%, South: 18%, Northeast: 5%
 
-Dashboard Pages
-Page 1: Market Overview
+**Dashboard Pages**
 
-KPIs: Total Sales Volume (486 units), Avg Price ($53.6K), Median Price ($49K), Revenue ($26M)
+**Page 1: Market Overview**
 
-Line chart: Sales volume and average price trend over 5 years
+Landing page: option to select either Overall Summary, Model-wise Sales or Explore Resale Patterns
 
-Finding: Volume steady but prices declining slightly (older machines entering market)
+<img width="1440" height="809" alt="project4 1" src="https://github.com/user-attachments/assets/4644bb39-b7ce-4387-b5ae-d3c5ff75189a" />
 
-Page 2: Model Performance
 
-Table: All dozer models ranked by:
+Page 2: Overall Summary
 
-Units sold (volume)
+<img width="1441" height="806" alt="Project4 2" src="https://github.com/user-attachments/assets/d613a0c3-c422-4aad-b857-047b06a993d5" />
 
-Average price
 
-Revenue contribution
+KPIs: Unique Models Sold Per Year (36), Total Dozers Sold Per Year (7968), Avg. Resale Price ($53.67K), Median Resale Price ($49.00K)
 
-Gross margin (est. based on cost)
+<img width="883" height="182" alt="image" src="https://github.com/user-attachments/assets/fb0e5f54-ce9f-42fe-8569-86c44ebb52a5" />
 
-Insight: D6 and D5 models = 60% of volume but lower margins; premium models (D8, D7) = 20% volume, 40% margin
+Line chart: Total Sales volume per year, Age Trend, Avg Sale price Trend, Orders trend over time.. all are toggled using Button and Bookmark
 
-Page 3: Depreciation Analysis & Age Curves
+<img width="519" height="165" alt="image" src="https://github.com/user-attachments/assets/e6b95b5d-51ba-40b8-a039-f6620d555f75" />
 
-Scatter plot: Machine age (X-axis) vs. Sale Price (Y-axis)
+<img width="531" height="165" alt="image" src="https://github.com/user-attachments/assets/3740d92e-c692-4977-9403-a994937b8750" />
 
-Clear depreciation curve visible
+<img width="523" height="170" alt="image" src="https://github.com/user-attachments/assets/f94ce4aa-f02b-4b55-9c93-91b33160e052" />
 
-0-5 years: $72K avg
+<img width="518" height="170" alt="image" src="https://github.com/user-attachments/assets/b6c39326-bbb7-4b4f-97e1-b61741373400" />
 
-5-10 years: $55K
+Funnel : Median Resale Price by Data source
 
-10-20 years: $32K
+<img width="360" height="163" alt="image" src="https://github.com/user-attachments/assets/9d4dc8b5-0d8a-40c3-bea9-c57a85ebf483" />
 
-20+ years: $18K
+Line and Stacked Column Chart : Gross Revenue & orders | Monthly Trend
 
-Trendline: Depreciation follows ~$4K/year for first 10 years, then flattens
+<img width="532" height="172" alt="image" src="https://github.com/user-attachments/assets/215a8e23-5def-4cad-8612-f04968f4ea89" />
 
-Finding: Machines >20 years old have minimal resale value unless unique configuration
+**Page 2:  Model-wise Sales**
 
-Page 4: Configuration & Features Premium
+<img width="1437" height="817" alt="Project4 3" src="https://github.com/user-attachments/assets/9e4fa9d1-e9de-4ae4-96a5-b7e4e7635fd5" />
 
-Bar chart: Sale price by ripper type
 
-Single Shank ripper: $61K (premium)
+Matrix: All dozer models ranked by: Avg. Sales Price
 
-Standard blade: $48K
+<img width="583" height="222" alt="image" src="https://github.com/user-attachments/assets/0abf91da-c16a-44d5-9e6f-aa263f36dc87" />
 
-No ripper: $45K
+Top 5 Best-Selling Products
 
-Finding: Ripper adds ~$12-15K value
+<img width="305" height="144" alt="image" src="https://github.com/user-attachments/assets/23e6b131-596a-4a9a-82ee-5872124209c0" />
 
-Table: Configuration combinations and their price impact
+Top 5 Slow-moving Products
 
-Page 5: Geographic Market Analysis
+<img width="309" height="151" alt="image" src="https://github.com/user-attachments/assets/8276f503-b4bd-4b41-bfb9-1464e0049946" />
 
-Map: USA color-coded by sales density/average price
+Matrix for Ripper Type
 
-Midwest (manufacturing corridor): Highest volume, competitive pricing ($51K)
+<img width="309" height="112" alt="image" src="https://github.com/user-attachments/assets/7d5cff58-6e7f-4289-95bb-405ca3c50ba4" />
 
-West: Lower volume but higher prices ($58K) — supply/demand imbalance?
+Stock Distributaion by Product Hiearchy
 
-Northeast: Lowest volume ($52K)
+<img width="592" height="186" alt="image" src="https://github.com/user-attachments/assets/60598a7a-e928-4eac-97b5-4cddfc53a87f" />
 
-Recommendation: Marketing push in underserving regions (Northeast, South)
+Page 3: Pattern Analysis
 
-Page 6: Inventory & Recommendation
+<img width="1437" height="798" alt="project4 4" src="https://github.com/user-attachments/assets/84f6e360-fe85-4831-aecd-04d1b19ed62a" />
 
-Table: Current inventory of dozers for sale with:
+**Business Impact**
 
-Model, Age, Configuration, Current list price
-
-Recommended price (based on comparable sales analysis)
-
-Price adjustment needed (if overpriced/underpriced)
-
-Finding: 3 D3 models overpriced by 18-22%; recommend price reductions
-
-Finding: 2 D8 models underpriced; opportunity to increase price by 8%
-
-Page 7: Sales Trend & Forecast
-
-Line chart: Monthly units sold (last 24 months)
-
-Trend analysis: Slight upward trend (suggesting strong demand)
-
-Forecast: Projected 520 units in next 12 months (vs. 486 historical)
-
-Insight: Market appears healthy; good time to stock more inventory
-
-Business Impact
-Quantifiable Outcomes:
+**Quantifiable Outcomes:**
 
 Pricing Accuracy Improvement: Implemented pricing model based on age/model/configuration
 
@@ -209,8 +189,9 @@ Forecast-Driven Stocking: Used demand forecast to anticipate inventory needs
 
 Result: Reduced stockout instances by 60%; improved customer satisfaction
 
-Technical Implementation
-Power BI Features:
+**Technical Implementation**
+
+**Power BI Features:**
 
 Map visualization for geographic analysis
 
@@ -242,7 +223,8 @@ Validated age calculations
 
 Confirmed price ranges realistic
 
-Learning Outcomes
+**Learning Outcomes**
+
 Pricing Analytics: Learned to analyze pricing power across product dimensions (age, model, features)
 
 Market Dynamics: Understood supply/demand imbalances drive pricing (Northeast higher prices = low supply)
@@ -252,3 +234,5 @@ Visual Communication: Used maps and scatter plots to tell compelling stories abo
 Business Strategy: Connected analytics to inventory and go-to-market decisions
 
 Forecasting: Applied trend analysis and forecasting to support planning
+
+Pbix file : https://drive.google.com/file/d/1iwUNaYY-d578uq15XFIWQs9uWhRrr_4j/view?usp=sharing
