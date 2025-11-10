@@ -1,9 +1,13 @@
-Category: Customer Analytics & Retention
-Executive Summary:
+**Category: Customer Analytics & Retention**
+
+**Executive Summary:**
+
 A predictive analytics dashboard identifying at-risk customer segments, quantifying churn drivers, and enabling targeted retention campaigns. This project demonstrated advanced DAX modeling and customer behavior analytics.
 
-Business Problem & Context
-Challenge:
+**Business Problem & Context**
+
+**Challenge:**
+
 A telecom/service company experienced 15% annual churn (losing 1 in 7 customers yearly), costing millions in lost revenue. Leadership lacked:
 
 Understanding of which customers were at risk
@@ -22,16 +26,11 @@ Which services reduce churn (upsell/cross-sell opportunity)?
 
 Can we predict churn proactively?
 
-Solution Architecture
-Data Source:
+**Solution Architecture**
 
-Customer master table: Demographics (age, tenure, location)
+**Data Source:**
 
-Service subscriptions: Contract type, payment method, services added (tech support, device protection, online security)
-
-Usage metrics: Monthly charges, data usage, support tickets
-
-Churn flag: Binary (churned = 1, active = 0)
+Customer master table: Demographics (age, tenure, location), churn (Yes, No)
 
 Data Preparation & Feature Engineering:
 
@@ -67,137 +66,93 @@ Contract_Type: Month-to-month, 1-year, 2-year (month-to-month = higher churn)
 
 Payment_Method: Auto pay, Electronic check, Credit card, Mailed check
 
-DAX Measures & Analysis (40+ Formulas)
+DAX Measures & Analysis (32+ Formulas)
+
 Churn Metrics:
 
-Total Customers = COUNTA(Customer[CustomerID])
+% Device protection churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[DEVICEPROTECTION]= "Yes",'Churn table'[CHURN]=TRUE()),[churn count],0)
 
-Churned Customers = CALCULATE([Total Customers], ChurnFlag = 1)
+% Device protection customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[DEVICEPROTECTION]= "Yes",'Churn table'[CHURN]=false),[customer count],0)
 
-Churn Rate % = DIVIDE([Churned Customers], [Total Customers])
+% moviestream churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[STREAMINGMOVIES]= "Yes",'Churn table'[CHURN]=true),[churn count],0)
 
-At-Risk Score = Composite measure (tenure weight 30%, services weight 25%, engagement 20%, contract 25%)
+% moviestream customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[STREAMINGMOVIES]= "Yes",'Churn table'[CHURN]=false),[customer count],0)
 
-Segment-Level Analysis:
-5. Churn Rate by Age = CALCULATE([Churn Rate %], Segmentation[AgeGroup])
+% online backup churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[ONLINEBACKUP]= "Yes",'Churn table'[CHURN]=TRUE()),[churn count],0)
 
-Senior citizens: 28% churn (vs. 15% average) → HIGH RISK
+% online backup customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[ONLINEBACKUP]= "Yes",'Churn table'[CHURN]=false),[customer count],0)
 
-Churn Rate by Tenure = CALCULATE([Churn Rate %], Segmentation[TenureGroup])
+% online security churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[ONLINESECURITY]= "Yes",'Churn table'[CHURN]=TRUE()),[churn count],0)
 
-New customers (<12 mo): 18% churn
+% online security customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[ONLINESECURITY]= "Yes",'Churn table'[CHURN]=false),[customer count],0)
 
-Loyal (>36 mo): 8% churn
+% partner churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[PARTNER]= TRUE(),'Churn table'[CHURN] = TRUE()),[churn count],0)
 
-Churn Rate by Service Count = CALCULATE([Churn Rate %], Segmentation[ServiceCount])
+% partner customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[PARTNER]= TRUE(),'Churn table'[CHURN] = FALSE()),[customer count],0)
 
-0 services: 32% churn
+% senior Citizen = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[SENIORCITIZEN]=1,'Churn table'[CHURN] = FALSE()),[customer count],0)
 
-1-2 services: 18% churn
+% senior Citizen churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[SENIORCITIZEN]=1,'Churn table'[CHURN] = TRUE()),[churn count],0)
 
-3+ services: 6% churn → STICKY CUSTOMERS
+% tech support churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[TECHSUPPORT]= "Yes",'Churn table'[CHURN]=TRUE()),[churn count],0)
 
-Churn Rate by Contract Type = CALCULATE([Churn Rate %], Contract[Type])
+% tech support customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[TECHSUPPORT]= "Yes",'Churn table'[CHURN]=false),[customer count],0)
 
-Month-to-month: 42% churn (very high)
+% tvstream churn = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[STREAMINGTV]= "Yes",'Churn table'[CHURN]=TRUE()),[churn count],0)
 
-1-year: 11% churn
+% tvstream customer = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[STREAMINGTV]= "Yes",'Churn table'[CHURN]=false),[customer count],0)
 
-2-year: 3% churn
+average Total charges = CALCULATE(AVERAGE('Churn table'[TOTALCHARGES]))
 
-Tech Support Impact = DIVIDE(Churn w/ Tech Support, Churn w/o Tech Support)
+churn average monthly charges = CALCULATE(AVERAGE('Churn table'[MONTHLYCHARGES]),'Churn table'[CHURN]= TRUE())
 
-Finding: Tech support reduces churn by 70%
+churn count = CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[CHURN] = TRUE())
 
-With support: 8% churn; Without: 27% churn
+churn customer count = CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[CHURN] = TRUE())
 
-Device Protection Impact = Similar analysis
+churn multipleline_NO = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES]= "No",'Churn table'[CHURN] = TRUE()),CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES] <> "No phone service",'Churn table'[CHURN] = TRUE()),0)
 
-Finding: Device protection reduces churn by 55%
+churn multipleline_yes = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES]= "Yes",'Churn table'[CHURN] = TRUE()),CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES] <> "No phone service",'Churn table'[CHURN] = TRUE()),0)
 
-Payment Method Churn = CALCULATE([Churn Rate %], Payment[Method])
+churn Total monthly charges = CALCULATE(AVERAGE('Churn table'[TOTALCHARGES]),'Churn table'[CHURN]= TRUE())
 
-Electronic check: 45% churn
+client average monthly charges = AVERAGE('Churn table'[MONTHLYCHARGES])
 
-Credit card: 8% churn
+client multipleline_NO = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES]= "No",'Churn table'[CHURN] = FALSE()),CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES] <> "No phone service",'Churn table'[CHURN] = FALSE()),0)
 
-Auto-pay: 5% churn
+client multipleline_yes = DIVIDE(CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES]= "Yes",'Churn table'[CHURN] = FALSE()),CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[MULTIPLELINES] <> "No phone service",'Churn table'[CHURN] = FALSE()),0)
 
-Customer Lifetime Value (LTV) Metrics:
-12. Average Monthly Charge = AVERAGE(Customer[MonthlyCharge])
-13. Average Tenure (Months) = AVERAGE(Customer[TenureMonths])
-14. Customer LTV = [Average Monthly Charge] × [Average Tenure (Months)]
-- With tech support: LTV ~$3,200 (40 mo tenure)
-- Without tech support: LTV ~$1,100 (15 mo tenure)
+Count of paymentmthod customer = CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[CHURN]=false)
 
-Segmentation for Targeting:
-15. High-Value At-Risk = Customers where LTV > $2,500 AND At-Risk Score > 70
-- Count: 247 customers; potential loss: ~$618K annually
-- Recommendation: Personal outreach, discounts, service bundles
+customer count = CALCULATE(COUNT('Churn table'[CUSTOMERID]),'Churn table'[CHURN] = FALSE())
 
-Senior Citizens At-Risk = CALCULATE([Churned Customers], Age > 65)
-
-28% churn rate; opportunities: simplified interfaces, phone support
-
-New Customer (0-12 mo) At-Risk = Customers with tenure < 12 mo AND churn risk
+Total Count by Gender churn = CALCULATE(COUNT('Churn table'[GENDER]), 'Churn table'[CHURN]= TRUE())
 
 Finding: Need aggressive onboarding and early engagement
 
-Dashboard Design
-Page 1: Churn Overview (KPIs)
+**Dashboard Design**
 
-Current churn rate (%): 15% (1,247 churned of 8,314 total)
+Page 1: Churn Overview Landing Page.
 
-Customers at risk: 2,100 (identified via predictive model)
+<img width="1436" height="808" alt="Project3 1" src="https://github.com/user-attachments/assets/1a2bc7be-bd7c-44e0-a340-786e75ea787e" />
 
-Monthly churn cost: $145,000
+Page 2: Client Analysis
 
-Cards: Churn trending, churn by segment
+<img width="1445" height="809" alt="Project3 2" src="https://github.com/user-attachments/assets/d3b89e44-78f3-4403-9f27-4c0bc0d070a5" />
 
-Page 2: Segment Risk Analysis
+Page 3: Churn Risk Analysis
 
-Table: Age, Tenure, Contract Type, with churn rates
-
-Heatmap: Churn rate by Age × Contract (Month-to-month + Senior = 45% churn!)
-
-Key finding: Focus on senior citizens with month-to-month contracts
+<img width="1462" height="808" alt="project3 3" src="https://github.com/user-attachments/assets/96a53616-667c-407a-b338-edf62a807839" />
 
 Page 3: Service Impact & Retention Levers
 
-Stacked bar: Churn rate by service offering (0, 1, 2, 3+ services)
-
-Visualization: Each service's individual impact (tech support -70%, protection -55%, etc.)
-
-Insight: Every service added = ~8-10% reduction in churn
+<img width="1444" height="802" alt="project3 4" src="https://github.com/user-attachments/assets/d17bfa2a-3394-489e-8ccf-aa79c71f283d" />
 
 Business recommendation: Upsell services to high-risk, non-adopters
 
-Page 4: Contract & Payment Behavior
+**Business Impact**
 
-Donut: Churn by contract type (month-to-month = 42%)
-
-Bar: Churn by payment method (electronic check = 45%)
-
-Recommendation: Incentivize long-term contracts, auto-pay options
-
-Page 5: Predictive Churn Scoring
-
-Table: Top 500 at-risk customers ranked by churn probability
-
-Columns: Name, Segment, Current Services, LTV, Churn Risk %, Recommended Action
-
-Status: Green (low risk), Yellow (medium), Red (urgent intervention needed)
-
-Page 6: Retention Campaign Performance
-
-Tracked results of outreach campaigns
-
-Measured effectiveness: Did outreach reduce churn for targeted segment?
-
-Finding: Personal calls to high-risk seniors reduced churn by 35%
-
-Business Impact
-Quantifiable Outcomes:
+**Quantifiable Outcomes:**
 
 Churn Reduction: Decreased from 15% to 11.2% in 12 months
 
@@ -237,16 +192,17 @@ Payment method drives churn: Electronic check = highest risk
 
 LTV doubled when customers adopted multiple services
 
-Tools & Techniques Demonstrated
-Advanced Power BI:
+**Tools & Techniques Demonstrated**
 
-40+ DAX measures (complex conditional logic, aggregations, rankings)
+**Advanced Power BI:**
+
+32+ DAX measures (complex conditional logic, aggregations, rankings)
 
 Cohort analysis and segmentation
 
 Predictive modeling integration (using R/Python in Power BI)
 
-Storytelling across 6 interactive pages
+Storytelling across 3 interactive pages
 
 Data Science Concepts:
 
@@ -258,7 +214,7 @@ Churn prediction/classification
 
 Correlation analysis (which factors drive churn)
 
-Business Analytics:
+**Business Analytics:**
 
 Customer lifetime value calculation
 
@@ -268,7 +224,8 @@ Segmentation strategy
 
 Intervention targeting
 
-Learning Outcomes
+**Learning Outcomes**
+
 Customer Analytics Mastery: Learned lifecycle analysis, segmentation, and LTV calculations
 
 Predictive Mindset: Moved from "What happened?" to "What will happen?"
@@ -278,3 +235,5 @@ Business Impact: Understood how to tie analytics to revenue (retention = revenue
 Complexity Management: Built 40+ measures without sacrificing model performance
 
 Storytelling: Presented complex analysis in business language for non-technical stakeholders
+
+Pbix Link : https://drive.google.com/file/d/1kW-UR2loJJlF9qQUK6NqMkEliQV5N8Ip/view?usp=sharing
