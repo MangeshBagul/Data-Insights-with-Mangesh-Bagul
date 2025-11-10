@@ -18,9 +18,9 @@ Are sales teams equally productive?
 
 **Data Landscape:**
 
-Multiple related tables: Orders, Order_Details, Products, Customers, Employees, Shippers
+Multiple related tables: Categories, Customers, Employees, Order_details, Products, Shippers, Suppliers
 
-Data in a traditional relational database structure (no pre-built star schema)
+Data in a OData link
 
 Manual Excel reporting prone to errors and slow
 
@@ -39,7 +39,7 @@ Region managers claimed unequal support/opportunity
 
   **Source:** OData feed from Northwind REST API
 
-  **Tables Imported:** 6 main tables (Orders, Order_Details, Products, Categories, Customers, Employees, Shippers)
+  **Tables Imported:** 6 main tables (Categories, Customers, Employees, Order_details, Products, Shippers, Suppliers)
 
   **Data Volume:** ~830 orders, ~2,200 order line items, 77 products, 91 customers, 9 employees, 3 shippers
 
@@ -137,68 +137,80 @@ High-Margin Products = Filter(Products where Margin % > 40%)
 
 Page 1: Sales Overview
 
-KPIs: Total Revenue, Gross Profit, Margin %, Orders Count
+<img width="1440" height="799" alt="project2 1" src="https://github.com/user-attachments/assets/978ef4ff-94b5-4e3f-afef-ce15aad1ab6e" />
 
-Line chart: Monthly sales trend (12-24 months)
 
-Donut chart: Top 5 vs. Rest product distribution
+KPIs: Gross Revenue, Total Discount, Net Revenue, Total Orders, Average of days to ship
+
+<img width="885" height="153" alt="image" src="https://github.com/user-attachments/assets/9dd656a6-3fc1-4ccf-afd3-05c0787e382d" />
+
+Line chart: Gross Trend, Discount Trend, Net Trend, Orders Trend..all toggled using button and bookmarks.
+
+<img width="527" height="153" alt="image" src="https://github.com/user-attachments/assets/608f2fe5-1a87-4674-ad5a-aec7ace489ac" />
+
+<img width="524" height="153" alt="image" src="https://github.com/user-attachments/assets/76933c91-f8e8-43e5-8744-cd53b1339dc5" />
+
+<img width="518" height="157" alt="image" src="https://github.com/user-attachments/assets/9ab26de4-76a6-4d58-9c34-57fcb3dabcf2" />
+
+<img width="533" height="153" alt="image" src="https://github.com/user-attachments/assets/7d03bd91-6487-48ab-abce-de828b3b5141" />
+
+Funnel chart: Shipping Company-wise Avg. Delivery Time
+
+<img width="353" height="148" alt="image" src="https://github.com/user-attachments/assets/b522ac60-3d9e-429c-b488-af0bd3b06a14" />
+
+Line and Stacked Column Chart:
+
+<img width="515" height="165" alt="image" src="https://github.com/user-attachments/assets/7d130a01-bac9-4bf6-a808-ed0920873163" />
 
 Finding: Top 5 products (Côte de Blaye, Thüringer, Raclette, Mozzarella, Camembert) = 48% revenue
 
-Page 2: Product Performance
+Page 2: Product  & Employees Performance
 
-Table: Each product with Revenue, Quantity Sold, Margin %, Category
+<img width="1453" height="805" alt="project2 2" src="https://github.com/user-attachments/assets/5ea490b4-e24d-4f51-8961-4e5d14208278" />
 
-Scatter: Price vs. Quantity Sold (identified bestsellers vs. premium slow-movers)
+Matrix: Each product with Revenue, Quantity Sold, Margin %, Category
 
-Bar chart: Products ranked by margin %
+<img width="580" height="192" alt="image" src="https://github.com/user-attachments/assets/29d25a69-70b0-46cf-9feb-821b0e217cd7" />
+
+Stacked Bar chart: Top 5 Best-selling Proudcts & Bottom 5 SLow-moving Produts
+
+<img width="305" height="290" alt="image" src="https://github.com/user-attachments/assets/8be38150-ed2c-4f8c-a74e-6b87c786c2ec" />
+
+Matrix: catergorwise Units in stock and unit ordeered
+
+<img width="309" height="88" alt="image" src="https://github.com/user-attachments/assets/ed7c60b5-3731-44e4-b792-92ee2e277324" />
+
+Clustered Column Chart : Stock distribution by Product Hierarchy
+
+<img width="586" height="170" alt="image" src="https://github.com/user-attachments/assets/8e6bb7a2-83e5-4658-b80b-256c68e1fe81" />
 
 Finding: High-margin items (Côte de Blaye at 60% margin) had lower volume but huge profit impact
 
-Page 3: Customer & Regional Analysis
+Page 3: Employees Analysis
 
-Map: Sales by country/region color-coded by revenue
+<img width="1438" height="802" alt="project2 3" src="https://github.com/user-attachments/assets/5be714ed-4cf9-4247-956c-69c99f45ec03" />
 
-Table: Top 20 customers (name, country, revenue, order count, avg order value)
+Matrix: Each Title with Revenue, Quantity Sold, Margin %, Category
 
-Pie chart: Revenue by region (North America, Europe, Asia-Pacific)
+<img width="585" height="204" alt="image" src="https://github.com/user-attachments/assets/ca107ea6-cbf2-43b3-a30f-1dbe88567c11" />
 
-Finding: USA, Germany, France dominated; Asia-Pacific opportunity untapped
+Stacked Bar chart: Top 5 performers Employees & Bottom 5 lowest contributers
 
-Page 4: Repeat Customer Analysis
+<img width="308" height="297" alt="image" src="https://github.com/user-attachments/assets/915c33e6-c121-446c-af5e-c2303976ab6e" />
 
-KPI: 65-70% of revenue from repeat customers (loyalty indicator)
+Matrix: Net revenue by designation
 
-Cohort analysis: New vs. established customers
+<img width="296" height="90" alt="image" src="https://github.com/user-attachments/assets/bc448b0a-4f78-48eb-b8ef-41ec199e1deb" />
 
-Retention metric: Customers ordering in current year vs. prior year
+Clustered Column Chart : Employee-wise Avg. Net revenue per order
+
+<img width="585" height="165" alt="image" src="https://github.com/user-attachments/assets/2297269c-00f7-4406-af9f-1efa6ba05c52" />
 
 Recommendation: Focus on retaining top 20% of customers = 50% of revenue
 
-Page 5: Logistics & Shipping
+**Business Impact**
 
-Table: 3 shippers (United Package, Federal Shipping, Speedy Express) ranked by:
-
-Total shipments
-
-On-time delivery %
-
-Average shipping cost
-
-Finding: United Package = 90% on-time, Speedy Express = 60% (bottleneck)
-
-Line chart: Shipping delay trend
-
-Page 6: Employee Performance
-
-Bar chart: Employees ranked by total sales revenue
-
-Card matrix: Employee name, Orders managed, Total Revenue, Avg Order Value, Performance vs. quota
-
-Finding: Top 3 employees generated 60% of orders; identified underperformers for coaching
-
-Business Impact
-Quantifiable Results:
+**Quantifiable Results:**
 
 Inventory Optimization: Reduced slow-moving stock by 22%
 
@@ -224,7 +236,8 @@ Margin Improvement: Focused sales team on high-margin products
 
 Result: Gross margin improved from 28% to 31.5%
 
-Tools & Skills Demonstrated
+**Tools & Skills Demonstrated**
+
 Power BI:
 
 OData feed connection and data source management
@@ -257,7 +270,8 @@ Presented findings in business-friendly language
 
 Recommended actionable insights (inventory, logistics, staffing)
 
-Learning Outcomes
+**Learning Outcomes**
+
 Data Integration: Mastered connecting to external data sources (OData) and data transformation pipelines
 
 Complex DAX: Built sophisticated measures involving filtering, ranking, and cross-table logic
@@ -267,3 +281,5 @@ Business Storytelling: Learned to present multiple perspectives on same data (pr
 Performance Analysis: Optimized dashboard for fast load times despite 2,200+ rows of data
 
 Root Cause Analysis: Moved beyond metrics to identify underlying drivers (e.g., shipper reliability → delayed orders)
+
+PBIX file download : https://drive.google.com/file/d/1ygTrmcC-w6xmsz7g4SmLrSlWZBb6qGXY/view?usp=sharing
